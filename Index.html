@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Blog NexTool | Estratégia SEO & Protótipo</title>
+    <meta name="description" content="Plano completo de desenvolvimento de blog de afiliados para ferramentas digitais e o protótipo visual.">
+    
+    <!-- Google Fonts: Inter para UI limpa e moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Identidade Visual do Projeto */
+            --primary: #0f172a;      /* Navy Blue (Confiança/Tech) */
+            --primary-light: #1e293b;
+            --accent: #10b981;       /* Emerald Green (Sucesso/Dinheiro) */
+            --accent-hover: #059669;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            
+            /* Espaçamento e Layout */
+            --container-width: 1200px;
+            --radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Reset & Base */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4 { color: var(--primary); font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+        p { margin-bottom: 1rem; }
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        img { max-width: 100%; height: auto; border-radius: var(--radius); }
+
+        /* Layout Utilitários */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--accent);
+            color: white;
+            font-weight: 600;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+        .btn-outline:hover { background-color: var(--accent); color: white; }
+
+        /* -----------------------------------------------------------
+           SISTEMA DE ABAS (Plano vs Visualização)
+        ----------------------------------------------------------- */
+        .tabs-nav {
+            position: sticky;
+            top: 0;
+            background: var(--primary);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .tabs-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .logo span { color: var(--accent); }
+        
+        .tab-buttons { display: flex; gap: 1rem; }
+        .tab-btn {
+            background: rgba(255,255,255,0.1);
+            color: #cbd5e1;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .tab-content { display: none; padding: 40px 0; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* -----------------------------------------------------------
+           ESTILOS DO PLANO ESTRATÉGICO (Documento)
+        ----------------------------------------------------------- */
+        .strategy-section {
+            background: white;
+            border-radius: var(--radius);
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .strategy-card h3 { font-size: 1.25rem; border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
+        .tag {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .article-list li {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+        .article-list li:last-child { border: none; }
+        .keyword { color: var(--accent-hover); font-weight: 600; font-size: 0.9rem; }
+
+        /* -----------------------------------------------------------
+           ESTILOS DO PROTÓTIPO BLOG (Visualização)
+        ----------------------------------------------------------- */
+        .mockup-wrapper {
+            background: #f1f5f9;
+            min-height: 100vh;
+            border: 10px solid var(--primary);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        /* Header do Blog Mockup */
+        .blog-header {
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .blog-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .blog-nav a { margin-left: 20px; font-weight: 500; color: var(--text-main); font-size: 0.95rem; }
+        .blog-nav a:hover { color: var(--accent); }
+
+        /* Hero Section Mockup */
+        .blog-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .blog-hero h1 { color: white; font-size: 2.5rem; margin-bottom: 1rem; }
+        .blog-hero p { color: #cbd5e1; font-size: 1.2rem; max-width: 600px; margin: 0 auto; }
+
+        /* Grid de Posts */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+        .post-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .post-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .post-img { height: 200px; background-color: #ddd; position: relative; }
+        .post-img img { width: 100%; height: 100%; object-fit: cover; }
+        .post-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .post-content { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .post-title { font-size: 1.25rem; margin-bottom: 10px; color: var(--primary); }
+        .post-excerpt { font-size: 0.95rem; color: var(--text-light); margin-bottom: 20px; flex-grow: 1; }
+        .post-meta { font-size: 0.8rem; color: #94a3b8; border-top: 1px solid var(--border); padding-top: 15px; display: flex; justify-content: space-between; }
+
+        /* -----------------------------------------------------------
+           ESTILOS DO ARTIGO DE REVIEW (O Extra de 1000 palavras)
+        ----------------------------------------------------------- */
+        .article-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+            padding: 40px 0;
+        }
+        .article-main { background: white; padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .article-sidebar { display: flex; flex-direction: column; gap: 20px; }
+        
+        .article-header { margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .article-title { font-size: 2.2rem; margin-bottom: 10px; color: var(--primary); }
+        .article-meta { color: var(--text-light); font-size: 0.9rem; display: flex; gap: 15px; align-items: center; }
+        
+        .affiliate-box {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .affiliate-box h4 { color: #065f46; margin-bottom: 5px; }
+        .affiliate-box p { color: #047857; font-size: 0.9rem; margin-bottom: 15px; }
+        .affiliate-box .btn { width: 100%; }
+
+        .pros-cons-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+        .pros-cons-table th { text-align: left; padding: 15px; background: var(--primary); color: white; }
+        .pros-cons-table td { padding: 15px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .pros-cons-table tr:last-child td { border-bottom: none; }
+        .check-icon { color: var(--accent); margin-right: 5px; }
+        .cross-icon { color: #ef4444; margin-right: 5px; }
+
+        .article-content h2 { margin-top: 40px; font-size: 1.8rem; }
+        .article-content h3 { margin-top: 30px; font-size: 1.4rem; }
+        .article-content ul { list-style: disc; margin-left: 20px; margin-bottom: 20px; }
+        .article-content li { margin-bottom: 10px; }
+        
+        .faq-section { margin-top: 50px; background: #f8fafc; padding: 30px; border-radius: var(--radius); }
+        .faq-item { margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .faq-question { font-weight: 700; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; }
+        .faq-answer { margin-top: 10px; color: var(--text-light); font-size: 0.95rem; }
+
+        /* Sidebar Widgets */
+        .widget { background: white; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .widget-title { font-size: 1.1rem; border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 15px; display: inline-block; }
+        .widget-links a { display: block; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; color: var(--text-main); }
+        .widget-links a:hover { color: var(--accent); padding-left: 5px; }
+
+        @media (max-width: 768px) {
+            .article-layout { grid-template-columns: 1fr; }
+            .strategy-grid { grid-template-columns: 1fr; }
+            .blog-nav { display: none; } /* Simplificação para mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegação Superior do Documento -->
+    <nav class="tabs-nav">
+        <div class="container">
+            <div class="logo">NexTool<span>.io</span></div>
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('strategy')">📋 Plano Estratégico</button>
+                <button class="tab-btn" onclick="switchTab('mockup-home')">🏠 Visualização: Home</button>
+                <button class="tab-btn" onclick="switchTab('mockup-article')">📝 Visualização: Artigo</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ABA 1: PLANEJAMENTO ESTRATÉGICO -->
+    <div id="strategy" class="tab-content active">
+        <div class="container">
+            <div style="margin-bottom: 40px; text-align: center;">
+                <h1 style="font-size: 2.5rem;">Briefing do Projeto: NexTool.io</h1>
+                <p style="font-size: 1.2rem; color: var(--text-light);">Estrutura completa para criação de um blog de afiliados de alta performance.</p>
+            </div>
+
+            <!-- Identidade Visual -->
+            <section class="strategy-section">
+                <h2>🎨 Identidade Visual & Branding</h2>
+                <div class="strategy-grid">
+                    <div class="strategy-card">
+                        <h3>Nome & Domínio</h3>
+                        <p><strong>Nome:</strong> NexTool Digital</p>
+                        <p><strong>Domínio:</strong> nextool.io (ou .com.br se focado apenas no Brasil, mas .io passa mais autoridade tech global).</p>
+                        <p><strong>Conceito:</strong> "Next" + "Tool". Sugere inovação e ferramentas futuras.</p>
+                    </div>
+                    <div class="strategy-card">
+                        <h3>Paleta de Cores</h3>
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <div style="width: 50px; height: 50px; background: var(--primary); border-radius: 4px;" title="Primary Blue"></div>
+                            <div style="width: 50px; height: 50px; background: var(--accent); border-radius: 4px;" title="Accent Green"></div>
+                            <div style="width: 50px; height: 50px; background: var(--bg-body); border: 1px solid #ddd; border-radius: 4px;" title="Background"></div>
+                        </div>
+                        <p><strong>Tipografia:</strong> Inter (Google Fonts). Limpa, altamente legível e moderna.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Estrutura e SEO -->
+            <section class="strategy-section">
+                <h2>🧩 Estrutura & Categorias</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                    <span class="tag">SEO Tools</span>
+                    <span class="tag">Marketing Digital</span>
+                    <span class="tag">Inteligência Artificial</span>
+                    <span class="tag">Produtividade</span>
+                    <span class="tag">Comparativos (A vs B)</span>
+                    <span class="tag">Tutoriais</span>
+                </div>
+                <h3>🔍 Estratégia de Conteúdo & Palavras-chave</h3>
+                <p>Foco em <strong>Long-Tail</strong> e intenção comercial/transactional. Estrutura de URL: <code>dominio.com/categoria/palavra-chave</code>.</p>
+                
+                <h4 style="margin-top: 20px;">🚀 20 Artigos Iniciais (Alto Potencial)</h4>
+                <ul class="article-list">
+                    <li><span>Melhor ferramenta de SEO em 2024</span> <span class="keyword">Volume Alto</span></li>
+                    <li><span>SEMrush vs Ahrefs: Qual escolher?</span> <span class="keyword">Comparativo</span></li>
+                    <li><span>Review Completo do Jasper AI</span> <span class="keyword">Review IA</span></li>
+                    <li><span>Ferramentas de automação de marketing</span> <span class="keyword">Listicle</span></li>
+                    <li><span>Como fazer pesquisa de palavras-chave grátis</span> <span class="keyword">How-to</span></li>
+                    <li><span>Notion vs ClickUp: Produtividade</span> <span class="keyword">Comparativo</span></li>
+                    <li><span>Melhores ferramentas de Email Marketing</span> <span class="keyword">Listicle</span></li>
+                    <li><span>Surfer SEO Review: Vale a pena?</span> <span class="keyword">Review SEO</span></li>
+                    <li><span>Midjourney vs DALL-E 3</span> <span class="keyword">IA Art</span></li>
+                    <li><span>Ferramentas de agendamento para redes sociais</span> <span class="keyword">Social Media</span></li>
+                    <li><span>Como criar funis de vendas online</span> <span class="keyword">Tutorial</span></li>
+                    <li><span>Review do Systeme.io</span> <span class="keyword">Afiliado BR</span></li>
+                    <li><span>Ferramentas de SEO Técnico</span> <span class="keyword"> Técnico</span></li>
+                    <li><span>ChatGPT para Marketing Digital</span> <span class="keyword">Tendência</span></li>
+                    <li><span>Hospedagem WordPress para SEO</span> <span class="keyword">Hosting</span></li>
+                    <li><span>Melhores cursos de Marketing Digital</span> <span class="keyword">Edu/Hotmart</span></li>
+                    <li><span>Como monitorar backlinks</span> <span class="keyword">Tutorial</span></li>
+                    <li><span>Ferramentas de SEO Local</span> <span class="keyword">Local SEO</span></li>
+                    <li><span>Canva Pro: Vale o upgrade?</span> <span class="keyword">Review</span></li>
+                    <li><span>Guia de Affiliate Marketing para Iniciantes</span> <span class="keyword">Evergreen</span></li>
+                </ul>
+            </section>
+
+            <!-- SEO Técnico e Monetização -->
+            <section class="strategy-section">
+                <div class="strategy-grid">
+                    <div class="strategy-card">
+                        <h3>⚙️ SEO Técnico</h3>
+                        <ul style="list-style: disc; margin-left: 20px;">
+                            <li><strong>Plugin:</strong> RankMath (Melhor que Yoast na versão gratuita atual).</li>
+                            <li><strong>Velocidade:</strong> Cache LiteSpeed + Imagens WebP.</li>
+                            <li><strong>Schema:</strong> Review Schema, FAQ Schema e Article Schema.</li>
+                            <li><strong>Core Web Vitals:</strong> Otimizar LCP (Imagens) e CLS (Layout shifts).</li>
+                        </ul>
+                    </div>
+                    <div class="strategy-card">
+                        <h3>💰 Monetização</h3>
+                        <ul style="list-style: disc; margin-left: 20px;">
+                            <li><strong>Programas:</strong> Amazon Associates, Hotmart, Eduzz, ShareASale (Internacional).</li>
+                            <li><strong>CTA Estratégico:</strong> Botões flutuantes ou em tabelas de comparação.</li>
+                            <li><strong>Isca Digital:</strong> Ebook "Guia de Ferramentas 2024" para capturar e-mail (Newsletter).</li>
+                        </ul>
+                    </div>
+                    <div class="strategy-card">
+                        <h3>🧠 Diferencial (EEAT)</h3>
+                        <ul style="list-style: disc; margin-left: 20px;">
+                            <li><strong>Experiência Real:</strong> Capturas de tela da conta paga das ferramentas.</li>
+                            <li><strong>Author Bio:</strong> Link para LinkedIn do autor.</li>
+                            <li><strong>Transparência:</strong> Aviso de afiliado visível no topo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ABA 2: MOCKUP HOME BLOG -->
+    <div id="mockup-home" class="tab-content">
+        <div class="mockup-wrapper">
+            <header class="blog-header">
+                <div class="container">
+                    <a href="#" class="logo" style="color: var(--primary);">NexTool<span>.io</span></a>
+                    <nav class="blog-nav">
+                        <a href="#">Início</a>
+                        <a href="#">Reviews</a>
+                        <a href="#">Comparativos</a>
+                        <a href="#">IA</a>
+                        <a href="#">Sobre</a>
+                    </nav>
+                    <button class="btn">Assinar Newsletter</button>
+                </div>
+            </header>
+
+            <section class="blog-hero">
+                <div class="container">
+                    <h1>Encontre as Melhores Ferramentas para Crescer seu Negócio</h1>
+                    <p>Reviews honestos, comparativos detalhados e guias de SEO e Marketing Digital.</p>
+                </div>
+            </section>
+
+            <main class="container">
+                <div class="posts-grid">
+                    <!-- Post 1 -->
+                    <article class="post-card">
+                        <div class="post-img">
+                            <span class="post-category">Review</span>
+                            <img src="https://picsum.photos/seed/seo/400/250" alt="Ferramenta de SEO">
+                        </div>
+                        <div class="post-content">
+                            <h3 class="post-title">SEMrush Review: A Melhor Suite de SEO em 2024?</h3>
+                            <p class="post-excerpt">Testamos exaustivamente o SEMrush. Veja os prós, contras e se vale o investimento para sua estratégia.</p>
+                            <div class="post-meta">
+                                <span>Por João Silva</span>
+                                <span>12 min leitura</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- Post 2 -->
+                    <article class="post-card">
+                        <div class="post-img">
+                            <span class="post-category">Comparativo</span>
+                            <img src="https://picsum.photos/seed/ai/400/250" alt="Inteligência Artificial">
+                        </div>
+                        <div class="post-content">
+                            <h3 class="post-title">Jasper AI vs ChatGPT: Qual é melhor para Blogs?</h3>
+                            <p class="post-excerpt">Comparação lado a lado de recursos, preços e qualidade de texto para criadores de conteúdo.</p>
+                            <div class="post-meta">
+                                <span>Por Ana Costa</span>
+                                <span>8 min leitura</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Post 3 -->
+                    <article class="post-card">
+                        <div class="post-img">
+                            <span class="post-category">Produtividade</span>
+                            <img src="https://picsum.photos/seed/work/400/250" alt="Produtividade">
+                        </div>
+                        <div class="post-content">
+                            <h3 class="post-title">As 5 Melhores Alternativas ao Notion em 2024</h3>
+                            <p class="post-excerpt">Se o Notion está complexo demais, confira estas opções focadas em gestão de projetos simples.</p>
+                            <div class="post-meta">
+                                <span>Por João Silva</span>
+                                <span>6 min leitura</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ABA 3: MOCKUP ARTIGO REVIEW (EXTRA 1000 PALAVRAS) -->
+    <div id="mockup-article" class="tab-content">
+        <div class="mockup-wrapper">
+            <header class="blog-header">
+                <div class="container">
+                    <a href="#" class="logo" style="color: var(--primary);">NexTool<span>.io</span></a>
+                    <nav class="blog-nav">
+                        <a href="#">Voltar para Home</a>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="container article-layout">
+                <!-- Conteúdo Principal -->
+                <main class="article-main">
+                    <header class="article-header">
+                        <span class="tag" style="margin-bottom: 10px;">Review de Ferramenta</span>
+                        <h1 class="article-title">SEMrush Review 2024: A Ferramenta de SEO Definitiva? Análise Completa</h1>
+                        <div class="article-meta">
+                            <span>Atualizado em: Outubro 2023</span>
+                            <span>•</span>
+                            <span>Autor: João Silva (Especialista SEO)</span>
+                            <span>•</span>
+                            <span>12 min de leitura</span>
+                        </div>
+                    </header>
+
+                    <!-- Aviso de Afiliado -->
+                    <div style="background: #fffbeb; border: 1px solid #fcd34d; padding: 15px; font-size: 0.85rem; color: #92400e; border-radius: 4px; margin-bottom: 30px;">
+                        <strong>Transparência:</strong> Este artigo contém links de afiliados. Se você comprar através deles, podemos ganhar uma comissão sem custo extra para você. Nossa opinião permanece imparcial.
+                    </div>
+
+                    <div class="article-content">
+                        <p class="lead" style="font-size: 1.1rem; color: var(--text-main); font-weight: 500;">
+                            No competitivo mundo do marketing digital, ter os dados certos é o que separa as empresas que crescem das que estagnam. O <strong>SEMrush</strong> é, há anos, um dos nomes mais respeitados quando falamos de SEO e pesquisa de palavras-chave. Mas será que ele ainda é o melhor em 2024, diante de concorrentes como Ahrefs e Moz?
+                        </p>
+
+                        <img src="https://picsum.photos/seed/semrush/800/400" alt="Interface do SEMrush" style="width: 100%; margin: 20px 0;">
+
+                        <h2>O que é o SEMrush?</h2>
+                        <p>O SEMrush é uma plataforma SaaS (Software as a Service) "all-in-one" para profissionais de marketing digital. Ele permite que você realize tarefas vitais como:</p>
+                        <ul>
+                            <li><strong>Pesquisa de Palavras-chave:</strong> Descobrir o que seu público está buscando.</li>
+                            <li><strong>Auditoria de Site:</strong> Encontrar erros técnicos que prejudicam seu ranqueamento.</li>
+                            <li><strong>Análise de Concorrentes:</strong> Espiar as estratégias de links e palavras-chave de rivais.</li>
+                            <li><strong>Rastreamento de Posição:</strong> Monitorar se você está subindo no Google.</li>
+                            <li><strong>Marketing de Conteúdo:</strong> Encontrar tópicos virais.</li>
+                        </ul>
+
+                        <h2>Principais Funcionalidades Testadas</h2>
+                        <p>Para esta review, utilizamos a conta "Pro" do SEMrush por 30 dias em um projeto real de tráfego orgânico.</p>
+                        
+                        <h3>1. Keyword Magic Tool 2.0</h3>
+                        <p>A ferramenta de palavras-chave recebeu uma atualização recente. A capacidade de filtrar por intenção de busca (informacional, transacional, navegacional) é um divisor de águas. Para quem faz <em>affiliate marketing</em>, filtrar apenas por intenção transacional economiza horas de trabalho.</p>
+
+                        <h3>2. Auditoria de Site (Site Audit)</h3>
+                        <p>O auditor crawla seu site como o Google. Ele atribui uma "Saúde do Site". Em nossos testes, ele identificou 4 links quebrados e 3 problemas de canonicalização que o Ahrefs não tinha marcado como críticos. O relatório é acionável e fácil de entender, mesmo para iniciantes.</p>
+
+                        <h3>3. Análise de Backlinks</h3>
+                        <p>O banco de dados de backlinks do SEMrush é massivo. A métrica "Authority Score" deles é uma excelente alternativa ao "Domain Authority" da Moz. Gostamos muito do recurso "Backlink Gap", que mostra quais links seus concorrentes têm e você não.</p>
+
+                        <h2>Prós e Contras do SEMrush</h2>
+                        <p>Nada é perfeito. Abaixo, nosso resumo honesto após o período de teste:</p>
+
+                        <table class="pros-cons-table">
+                            <thead>
+                                <tr>
+                                    <th width="50%">✅ Prós</th>
+                                    <th width="50%">❌ Contras</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p><span class="check-icon">✔</span> Suíte completa (SEO, PPC, Social, Conteúdo).</p>
+                                        <p><span class="check-icon">✔</span> Interface moderna e intuitiva.</p>
+                                        <p><span class="check-icon">✔</span> Excelente para pesquisa de palavras-chave (Long-tail).</p>
+                                        <p><span class="check-icon">✔</span> Ferramentas de SEO Local e Social Media incluídas.</p>
+                                    </td>
+                                    <td>
+                                        <p><span class="cross-icon">✖</span> Pode ser caro para pequenos negócios.</p>
+                                        <p><span class="cross-icon">✖</span> Limite de relatórios pode ser baixo no plano Pro.</p>
+                                        <p><span class="cross-icon">✖</span> Curva de aprendizado leve, mas existe.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2>Preço e Planos</h2>
+                        <p>O SEMrush oferece três planos principais:</p>
+                        <ul>
+                            <li><strong>Pro:</strong> $129.95/mês (Ideal para freelancers e iniciantes).</li>
+                            <li><strong>Guru:</strong> $249.95/mês (Inclui Brand Monitoring e histórico de dados).</li>
+                            <li><strong>Business:</strong> $499.95/mês (Para agências).</li>
+                        </ul>
+                        <p>Dica: O plano anual oferece uma economia significativa.</p>
+
+                        <h2>SEMrush vs Ahrefs</h2>
+                        <p>Esta é a dúvida de milhares de dólares. Simplificando:</p>
+                        <p>Se o seu foco principal é <strong>Marketing de Conteúdo e PPC</strong>, o SEMrush vence. Se o seu foco é puramente <strong>Análise de Backlinks e Link Building</strong>, o Ahrefs tem uma leve vantagem na interface de gráficos. No entanto, o SEMrush é uma ferramenta mais "completa" para o dia a dia.</p>
+
+                        <h2>Conclusão: Vale a Pena?</h2>
+                        <p>Sim. O SEMrush continua sendo uma das ferramentas mais robustas do mercado. Se você é sério sobre SEO e quer escalar seu tráfego orgânico, o ROI da ferramenta se paga rapidamente se você souber usar os dados para melhorar seu ranqueamento.</p>
+                        <p>A combinação de auditoria técnica, pesquisa de palavra-chave e análise de concorrentes em um único lugar economiza tempo e dinheiro.</p>
+                        
+                        <!-- CTA Box -->
+                        <div class="affiliate-box">
+                            <h4>Goste do que viu?</h4>
+                            <p>Teste o SEMrush gratuitamente por 7 dias (cartão necessário).</p>
+                            <a href="#" class="btn">Testar SEMrush Grátis</a>
+                            <p style="margin-top: 10px; font-size: 0.75rem; color: #64748b;">Garantia de reembolso de 7 dias.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Schema Simulation -->
+                    <div class="faq-section">
+                        <h3>Perguntas Frequentes (FAQ)</h3>
+                        <div class="faq-item">
+                            <div class="faq-question">O SEMrush tem versão gratuita? <span>+</span></div>
+                            <div class="faq-answer">Sim, mas é muito limitada. Permite apenas 10 pesquisas de palavras-chave por dia. Para uso profissional, o plano Pro é necessário.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">O SEMrush é bom para iniciantes? <span>+</span></div>
+                            <div class="faq-answer">Sim, eles têm muitas academias e recursos educativos. A interface é limpa, mas a quantidade de dados pode assustar no começo.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">Posso cancelar a qualquer momento? <span>+</span></div>
+                            <div class="faq-answer">Sim, o cancelamento pode ser feito a qualquer momento através do painel de configurações da conta.</div>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Sidebar -->
+                <aside class="article-sidebar">
+                    <div class="widget">
+                        <h4 class="widget-title">Sobre o Autor</h4>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                            <img src="https://picsum.photos/seed/avatar/60/60" alt="Autor" style="border-radius: 50%;">
+                            <div>
+                                <strong>João Silva</strong>
+                                <p style="font-size: 0.8rem; color: #64748b; margin:0;">SEO Specialist</p>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.9rem;">João ajuda empresas a escalarem tráfego orgânico há mais de 10 anos. Apaixonado por dados e café.</p>
+                    </div>
+
+                    <div class="widget">
+                        <h4 class="widget-title">Melhores Reviews</h4>
+                        <div class="widget-links">
+                            <a href="#">Review Ahrefs</a>
+                            <a href="#">Review Surfer SEO</a>
+                            <a href="#">Review Systeme.io</a>
+                            <a href="#">Review ConvertKit</a>
+                        </div>
+                    </div>
+
+                    <div class="widget" style="background: var(--primary); color: white;">
+                        <h4 class="widget-title" style="color: white; border-color: white;">Ebook Grátis</h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 15px;">Lista das 50 Melhores Ferramentas de Produtividade para 2024.</p>
+                        <input type="email" placeholder="Seu melhor e-mail" style="width: 100%; padding: 10px; border-radius: 4px; border: none; margin-bottom: 10px;">
+                        <button class="btn" style="width: 100%; font-size: 0.9rem;">Baixar Agora</button>
+                    </div>
+                </aside>
+            </div>
+            
+            <footer style="background: var(--primary); color: white; padding: 40px 0; margin-top: 60px;">
+                <div class="container" style="text-align: center;">
+                    <p>&copy; 2024 NexTool Digital. Todos os direitos reservados.</p>
+                    <div style="margin-top: 20px; font-size: 0.9rem;">
+                        <a href="#" style="color: #94a3b8; margin: 0 10px;">Política de Privacidade</a>
+                        <a href="#" style="color: #94a3b8; margin: 0 10px;">Termos de Uso</a>
+                        <a href="#" style="color: #94a3b8; margin: 0 10px;">Contato</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Lógica simples para alternar abas
+        function switchTab(tabId) {
+            // Remove active class de todos os botões
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Remove active class de todos os conteúdos
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Adiciona active no botão clicado e no conteúdo alvo
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+            
+            // Scroll para o topo
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
